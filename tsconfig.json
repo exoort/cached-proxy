@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "lib": [
+      "ESNext",
+      "ESNext.AsyncIterable",
+      "ESNext.String",
+    ],
+    "esModuleInterop": true,
+    "allowJs": true,
+    "sourceMap": true,
+    "strict": true,
+    "noEmit": true,
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "typeRoots": [
+      ".src/types/index.d.ts",
+      ".src/types/env.d.ts",
+      "./node_modules/@types"
+    ],
+    "paths": {
+      "*": [
+        "./node_modules/*",
+        "./src/types/*"
+      ]
+    }
+  },
+  "exclude": [
+    "node_modules",
+  ],
+  "include": [
+    "src/**/*"
+  ]
+}
