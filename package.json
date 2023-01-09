@@ -1,0 +1,35 @@
+{
+  "name": "cached-proxy",
+  "version": "0.0.1",
+  "description": "proxy and cache your request",
+  "main": "src/index.mjs",
+  "scripts": {
+    "dev": "nodemon ./src/index.mjs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "cache",
+    "proxy",
+    "api",
+    "request"
+  ],
+  "author": "exoort",
+  "license": "MIT",
+  "dependencies": {
+    "@fastify/cors": "^8.2.0",
+    "@fastify/http-proxy": "^8.4.0",
+    "@fastify/middie": "^8.1.0",
+    "dotenv": "^16.0.3",
+    "fastify": "^4.11.0",
+    "http-errors": "^2.0.0"
+  },
+  "devDependencies": {
+    "@types/http-errors": "^2.0.1",
+    "@types/node": "^18.11.18",
+    "eslint": "^8.31.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-typescript": "^0.14.0",
+    "nodemon": "^2.0.20"
+  }
+}
