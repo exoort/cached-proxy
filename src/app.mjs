@@ -1,7 +1,6 @@
 import fastify from 'fastify';
 
 import { startMemoryProfiler } from './utils/profiler.utile.mjs';
-import { createCluster } from './utils/cluster.utile.mjs';
 
 export const createApp = () => fastify({
   logger: false,
@@ -29,11 +28,5 @@ const start = (app) => {
 };
 
 export const startApp = (app) => {
-  if (app.configModule.clusterModeEnabled && app.configModule.isProductionEnv) {
-    createCluster(() => {
-      start(app);
-    });
-  } else {
-    start(app);
-  }
+  start(app);
 };

@@ -8,6 +8,10 @@ export const useSecurityModule = async (app) => {
     });
   }
 
+  await app.register(cors, {
+    origin: true,
+  });
+
   app.addHook('preHandler', (request, reply, done) => {
     checkRequestAuth(request, app);
     done();

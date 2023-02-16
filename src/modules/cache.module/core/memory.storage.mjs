@@ -23,8 +23,15 @@ export function memoryStorage(config) {
      * @returns {DataCache}
      */
   return {
-    async fetch(key, dataSource, seconds = config.defaultCacheTime) {
-      let data = await this.get(key);
+    async fetch(key, dataSource, {
+      seconds = config.defaultCacheTime,
+      invalidateCache = false,
+    } = {}) {
+      let data;
+
+      if (!invalidateCache) {
+        data = await this.get(key);
+      }
 
       if (!data && dataSource) {
         if (isFunction(dataSource)) {
@@ -73,12 +80,29 @@ export function memoryStorage(config) {
     },
 
     remove(key) {
-      if (cache.get(key)) {
+      if (cache.has(key)) {
         cache.delete(key);
         return Promise.resolve(true);
       }
 
       return Promise.resolve(false);
+    },
+
+    removeGroup(group) {
+      let hasAnyRemoved = false;
+
+      // eslint-disable-next-line no-restricted-syntax
+      for (const key of cache.keys()) {
+        const parsedKey = JSON.parse(key);
+
+        if (parsedKey.group === group) {
+          cache.delete(key);
+
+          hasAnyRemoved = true;
+        }
+      }
+
+      return Promise.resolve(hasAnyRemoved);
     },
 
     getAll() {

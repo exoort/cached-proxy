@@ -1,3 +1,5 @@
+import { buildCacheKey } from '../../cache.module/index.mjs';
+
 const schema = {
   body: {
     type: 'object',
@@ -5,11 +7,13 @@ const schema = {
     properties: {
       url: { type: 'string' },
       method: { type: 'string', enum: ['GET', 'POST', 'PATCH', 'DELETE', 'PUT'] },
-      query: { type: 'object', nullable: true },
+      query: { type: ['string', 'object'], nullable: true },
       body: { type: 'object', nullable: true },
       headers: { type: 'object', nullable: true },
       id: { type: ['string', 'object'], nullable: true },
+      group: { type: 'string', nullable: true },
       dontProxyHeaders: { type: 'boolean', nullable: true },
+      invalidateCache: { type: 'boolean', nullable: true },
     },
   },
 };
@@ -55,10 +59,15 @@ export const proxyRequestPostEndpoint = async (app) => {
     path: url,
     schema,
     handler: async (request, reply) => {
-      const proxied = request.body.id
+      const { id, invalidateCache, group } = request.body;
+
+      const proxied = id
         ? await app.cacheModule.fetch(
-          request.body.id,
+          buildCacheKey(id, group),
           () => httpCall(request.body, request.headers),
+          {
+            invalidateCache,
+          },
         )
         : await httpCall(request.body, request.headers);
 
