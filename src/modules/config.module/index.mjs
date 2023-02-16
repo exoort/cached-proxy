@@ -1,23 +1,55 @@
+import fastifyEnv from '@fastify/env';
+
+const envSchema = {
+  type: 'object',
+  required: ['SERVER_PORT'],
+  properties: {
+    SERVER_PORT: {
+      type: 'number',
+      default: 3000,
+    },
+    MEMORY_PROFILER: {
+      type: 'boolean',
+      default: true,
+    },
+    ALLOWED_CORS: {
+      type: 'string',
+      separator: ',',
+      default: '',
+    },
+    TARGETS: {
+      type: 'string',
+      separator: ',',
+      default: '',
+    },
+  },
+};
+
 export const useConfigModule = async (app) => {
+  await app.register(fastifyEnv, {
+    schema: envSchema,
+    dotenv: true,
+  });
+
   await app.decorate('configModule', {
     get serverPort() {
-      return process.env.SERVER_PORT || 3000;
+      return app.config.SERVER_PORT;
     },
 
     get memoryProfilerEnabled() {
-      return process.env.MEMORY_PROFILER || true;
+      return app.config.MEMORY_PROFILER;
     },
 
     get allowedCors() {
-      return process.env.ALLOWED_CORS || false;
+      return app.config.ALLOWED_CORS;
     },
 
     get targets() {
-      return process.env.TARGETS || [];
+      return app.config.TARGETS;
     },
 
     get apiToken() {
-      return process.env.API_TOKEN;
+      return app.config.API_TOKEN;
     },
   });
 
