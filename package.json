@@ -5,6 +5,7 @@
   "main": "src/index.mjs",
   "scripts": {
     "dev": "nodemon ./src/index.mjs",
+    "start": "node ./src/index.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -17,10 +18,11 @@
   "license": "MIT",
   "dependencies": {
     "@fastify/cors": "^8.2.0",
+    "@fastify/env": "^4.2.0",
     "@fastify/http-proxy": "^8.4.0",
     "@fastify/middie": "^8.1.0",
     "dotenv": "^16.0.3",
-    "fastify": "^4.11.0",
+    "fastify": "^4.13.0",
     "http-errors": "^2.0.0"
   },
   "devDependencies": {

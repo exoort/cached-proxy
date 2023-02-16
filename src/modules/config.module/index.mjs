@@ -1,43 +1,55 @@
+import fastifyEnv from '@fastify/env';
+
+const envSchema = {
+  type: 'object',
+  required: ['SERVER_PORT'],
+  properties: {
+    SERVER_PORT: {
+      type: 'number',
+      default: 3000,
+    },
+    MEMORY_PROFILER: {
+      type: 'boolean',
+      default: true,
+    },
+    ALLOWED_CORS: {
+      type: 'string',
+      separator: ',',
+      default: '',
+    },
+    TARGETS: {
+      type: 'string',
+      separator: ',',
+      default: '',
+    },
+  },
+};
+
 export const useConfigModule = async (app) => {
+  await app.register(fastifyEnv, {
+    schema: envSchema,
+    dotenv: true,
+  });
+
   await app.decorate('configModule', {
     get serverPort() {
-      return process.env.SERVER_PORT || 3000;
-    },
-
-    get serverHost() {
-      return process.env.SERVER_HOST || '127.0.0.1';
-    },
-
-    get isProductionEnv() {
-      return process.env.NODE_ENV === 'production';
-    },
-
-    get clusterModeEnabled() {
-      return process.env.CLUSTER_MODE || false;
+      return app.config.SERVER_PORT;
     },
 
     get memoryProfilerEnabled() {
-      return process.env.MEMORY_PROFILER || true;
-    },
-
-    get httpsEnabled() {
-      return process.env.HTTPS_ENABLED || true;
+      return app.config.MEMORY_PROFILER;
     },
 
     get allowedCors() {
-      return process.env.ALLOWED_CORS || false;
-    },
-
-    get cacheRequests() {
-      return process.env.CACHE_REQUESTS || true;
+      return app.config.ALLOWED_CORS;
     },
 
     get targets() {
-      return process.env.TARGETS || [];
+      return app.config.TARGETS;
     },
 
     get apiToken() {
-      return process.env.API_TOKEN;
+      return app.config.API_TOKEN;
     },
   });
 
