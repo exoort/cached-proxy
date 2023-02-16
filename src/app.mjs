@@ -19,6 +19,8 @@ const start = (app) => {
     }
   };
 
+  console.log('config', app.configModule.serverPort);
+
   app.listen(
     {
       port: app.configModule.serverPort,

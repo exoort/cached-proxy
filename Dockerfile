@@ -1,8 +1,7 @@
-# Use the official Node.js 10 image.
-# https://hub.docker.com/_/node
 FROM node:19-alpine
 
-ENV SERVER_PORT=3000
+ARG SERVER_PORT=3000
+ENV SERVER_PORT=$SERVER_PORT
 
 # Create and change to the app directory.
 WORKDIR /usr/src/app
@@ -18,6 +17,6 @@ RUN npm i --production
 # Copy local code to the container image.
 COPY . .
 
-EXPOSE SERVER_PORT
+EXPOSE ${SERVER_PORT}
 # Run the web service on container startup.
-CMD [ "npm", "start" ]
+CMD [ "node", "src/index.mjs" ]
