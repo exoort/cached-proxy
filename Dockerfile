@@ -2,6 +2,8 @@
 # https://hub.docker.com/_/node
 FROM node:19-alpine
 
+ENV SERVER_PORT=3000
+
 # Create and change to the app directory.
 WORKDIR /usr/src/app
 
@@ -16,5 +18,6 @@ RUN npm i --production
 # Copy local code to the container image.
 COPY . .
 
+EXPOSE SERVER_PORT
 # Run the web service on container startup.
 CMD [ "npm", "start" ]
