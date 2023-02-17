@@ -18,5 +18,8 @@ RUN npm i --production
 COPY . .
 
 EXPOSE ${SERVER_PORT}
+
 # Run the web service on container startup.
 CMD [ "node", "src/index.mjs" ]
+
+HEALTHCHECK CMD curl --location --request POST 'http://localhost:3000' --header 'Content-Type: application/json' --data-raw '{"url": "https://api.rapidmock.com/mocks/89mEw","method": "GET","id": "test","group": "testGroup"}' || exit 1
