@@ -13,13 +13,14 @@ const start = (app) => {
       startMemoryProfiler();
     }
 
+    // eslint-disable-next-line no-console
+    console.log(`app running on port ${app.configModule.serverPort}`);
+
     if (err) {
       app.log.error(err);
       process.exit(1);
     }
   };
-
-  console.log('config', app.configModule.serverPort);
 
   app.listen(
     {
