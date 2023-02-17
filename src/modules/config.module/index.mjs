@@ -22,6 +22,10 @@ const envSchema = {
       separator: ',',
       default: '',
     },
+    API_TOKEN: {
+      type: 'string',
+      default: '',
+    },
   },
 };
 
