@@ -17,12 +17,12 @@
   "author": "exoort",
   "license": "MIT",
   "dependencies": {
-    "@fastify/cors": "^8.2.0",
+    "@fastify/cors": "^8.2.1",
     "@fastify/env": "^4.2.0",
-    "@fastify/http-proxy": "^8.4.0",
+    "@fastify/http-proxy": "^9.0.0",
     "@fastify/middie": "^8.1.0",
     "dotenv": "^16.0.3",
-    "fastify": "^4.13.0",
+    "fastify": "^4.15.0",
     "http-errors": "^2.0.0"
   },
   "devDependencies": {
@@ -32,6 +32,6 @@
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-typescript": "^0.14.0",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.22"
   }
 }

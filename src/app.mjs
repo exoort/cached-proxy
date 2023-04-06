@@ -3,7 +3,7 @@ import fastify from 'fastify';
 import { startMemoryProfiler } from './utils/profiler.utile.mjs';
 
 export const createApp = () => fastify({
-  logger: false,
+  logger: true,
   disableRequestLogging: true,
 });
 

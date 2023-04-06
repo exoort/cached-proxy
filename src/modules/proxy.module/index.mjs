@@ -1,5 +1,7 @@
 import fastifyHttpProxy from '@fastify/http-proxy';
 
+export * from './core/createProxiedResponse.mjs';
+
 export const useProxyModule = (app) => {
   app.configModule.targets.forEach((target) => {
     app.register(fastifyHttpProxy, {
