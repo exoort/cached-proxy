@@ -1,4 +1,6 @@
+import { ProxyFailedError } from '../../errors.module/index.mjs';
 import { buildCacheKey } from '../../cache.module/index.mjs';
+import { createProxiedResponse } from '../../proxy.module/index.mjs';
 
 const schema = {
   body: {
@@ -40,7 +42,6 @@ export const proxyRequestPostEndpoint = async (app) => {
       ...rewriteHeaders(reqHeaders, req.dontProxyHeaders),
       ...(req.headers || {}),
     };
-
     const res = await fetch(req.url, {
       method: req.method,
       body: req.body,
@@ -50,6 +51,10 @@ export const proxyRequestPostEndpoint = async (app) => {
     });
 
     res.parsedBody = await res.text();
+
+    if (res.status >= 400) {
+      throw new ProxyFailedError(res, req, headers);
+    }
 
     return res;
   };
@@ -71,11 +76,7 @@ export const proxyRequestPostEndpoint = async (app) => {
         )
         : await httpCall(request.body, request.headers);
 
-      return reply
-        .type(proxied.headers.get('content-type'))
-        .status(proxied.status)
-        .headers(proxied.headers)
-        .send(proxied.parsedBody);
+      return createProxiedResponse(reply, proxied);
     },
   });
 

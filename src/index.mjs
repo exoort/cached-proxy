@@ -5,10 +5,12 @@ import { useCacheModule } from './modules/cache.module/index.mjs';
 
 import { createApp, startApp } from './app.mjs';
 import { pipe } from './utils/pipe.utile.mjs';
+import { useErrorHandlers } from './modules/errors.module/index.mjs';
 
 const init = () => {
   pipe(
     useConfigModule,
+    useErrorHandlers,
     useCacheModule,
     useSecurityModule,
     useEndpointsModule,
