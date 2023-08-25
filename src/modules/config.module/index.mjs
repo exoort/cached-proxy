@@ -26,6 +26,14 @@ const envSchema = {
       type: 'string',
       default: '',
     },
+    MAX_WORKER_THREADS: {
+      type: 'number',
+      default: 0,
+    },
+    IS_PRODUCTION_ENV: {
+      type: 'boolean',
+      default: false,
+    },
   },
 };
 
@@ -54,6 +62,24 @@ export const useConfigModule = async (app) => {
 
     get apiToken() {
       return app.config.API_TOKEN;
+    },
+
+    get isProductionEnv() {
+      return app.config.IS_PRODUCTION_ENV;
+    },
+
+    get maxWorkerThreads() {
+      const threadsCount = app.config.MAX_WORKER_THREADS;
+
+      if (threadsCount === -1) {
+        return Infinity;
+      }
+
+      if ([0, 1].includes(threadsCount)) {
+        return 1;
+      }
+
+      return threadsCount;
     },
   });
 

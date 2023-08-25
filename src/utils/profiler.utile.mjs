@@ -1,4 +1,4 @@
-import { getWorkerId } from './cluster.utile.mjs';
+import { logWithProcessName } from './cluster.utile.mjs';
 
 export const startMemoryProfiler = () => {
   setInterval(() => {
@@ -9,10 +9,6 @@ export const startMemoryProfiler = () => {
     const f = (value) => (!value ? '-' : `${Math.round(value / 1048576)} MB`);
 
     // eslint-disable-next-line no-console
-    console.log(
-      `${getWorkerId()}: [${new Date().toTimeString().substr(0, 8)}] Memory usage: ${f(used)} (RSS: ${f(rss)}) - total heap: ${f(
-        tot,
-      )} - external: ${f(ext)}`,
-    );
+    logWithProcessName(console.log, `[${new Date().toTimeString().substr(0, 8)}] Memory usage: ${f(used)} (RSS: ${f(rss)}) - total heap: ${f(tot)} - external: ${f(ext)}`);
   }, 10000);
 };

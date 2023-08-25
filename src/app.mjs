@@ -1,6 +1,8 @@
 import fastify from 'fastify';
+import { cpus } from 'os';
 
 import { startMemoryProfiler } from './utils/profiler.utile.mjs';
+import { createCluster, logWithProcessName } from './utils/cluster.utile.mjs';
 
 export const createApp = () => fastify({
   logger: true,
@@ -13,11 +15,10 @@ const start = (app) => {
       startMemoryProfiler();
     }
 
-    // eslint-disable-next-line no-console
-    console.log(`app running on port ${app.configModule.serverPort}`);
+    logWithProcessName(console.log, `app running on port ${app.configModule.serverPort}`);
 
     if (err) {
-      app.log.error(err);
+      logWithProcessName(app.log.error, err);
       process.exit(1);
     }
   };
@@ -30,6 +31,35 @@ const start = (app) => {
   );
 };
 
+const getClusterModeConfig = (maxWorkerThreads) => {
+  let treadsCount = maxWorkerThreads;
+
+  const useAllAvailableThreads = treadsCount === Infinity;
+
+  const clustedModeEnabled = useAllAvailableThreads || treadsCount > 1;
+
+  if (useAllAvailableThreads) {
+    treadsCount = cpus().length;
+  }
+
+  return {
+    treadsCount,
+    clustedModeEnabled,
+  };
+};
+
 export const startApp = (app) => {
-  start(app);
+  const { clustedModeEnabled, treadsCount } = getClusterModeConfig(app.configModule.maxWorkerThreads);
+
+  if (clustedModeEnabled && app.configModule.isProductionEnv) {
+    const actionForWorker = () => {
+      start(app);
+    };
+
+    const onWorkerShutdown = () => {};
+
+    createCluster(actionForWorker, onWorkerShutdown, treadsCount);
+  } else {
+    start(app);
+  }
 };
